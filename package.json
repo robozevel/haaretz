@@ -1,0 +1,17 @@
+{
+  "name": "haaretz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guy Levi",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "got": "^10.2.2",
+    "micro": "^9.3.4",
+    "micro-cors": "^0.1.1"
+  }
+}
