@@ -12,7 +12,7 @@ const client = got.extend({
 })
 
 const style = [
-  'direction': 'rtl',
+  'direction: rtl',
   'max-width: 64rem',
   'margin: 0 auto',
   'font-family: sans-serif',
