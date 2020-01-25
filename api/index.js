@@ -12,7 +12,6 @@ const client = got.extend({
 })
 
 const style = [
-  'direction: rtl',
   'max-width: 64rem',
   'margin: 0 auto',
   'font-family: sans-serif',
@@ -29,10 +28,12 @@ const handler = async (req, res) => {
   const p = $('p')
 
   return `
-    <body style="${style}">
-      ${teaser}
-      ${p}
-    </body>
+    <html dir="rtl">
+      <body style="${style}">
+        ${teaser}
+        ${p}
+      </body>
+    </html>
   `
 }
 
