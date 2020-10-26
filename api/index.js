@@ -35,8 +35,8 @@ const css = `
   }
 `
 
-const handler = async (req, res) => {
-  const { pathname } = new URL(req.query.url)
+const handler = async req => {
+  const { pathname } = new URL(req.query.url || req.query.text)
   const path = pathname.split('/').pop()
   const { body } = await client.get(path)
   const title = $('title', body).text()

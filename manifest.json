@@ -1,0 +1,17 @@
+{
+  "short_name": "Haaretz",
+  "name": "Haaretz Reader",
+  "share_target": {
+    "action": "/api/",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "description": "Haaretz Reader",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#0B7EB5"
+}
