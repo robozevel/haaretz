@@ -54,6 +54,7 @@ const handler = async req => {
   <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <link href="/manifest.json" rel="manifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <style>
