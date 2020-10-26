@@ -18,7 +18,7 @@ const css = `
     font-family: 'Rubik', sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    padding: 2rem;
+    padding: 0 2rem;
   }
 
   figure {
