@@ -35,6 +35,11 @@ const css = `
     max-width: 100%;
   }
 
+  figcaption {
+    padding: 0 .5rem;
+    text-align: center;
+  }
+
   figcaption span {
     display: block;
   }
