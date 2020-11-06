@@ -7,7 +7,8 @@ const got = require('got')
 const client = got.extend({
   prefixUrl: 'https://www.haaretz.co.il/amp/',
   headers: {
-    'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+    // Chrome - iPhone
+    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/85.0.4183.121 Mobile/15E148 Safari/604.1'
   }
 })
 
@@ -22,16 +23,20 @@ const css = `
   }
 
   figure {
-    margin: 1rem 0;
-    padding: 0 2rem;
+    margin: 1rem -2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
 
-  img {
-    max-width: 100vw;
+  figure img {
+    width: 100vw;
+    max-width: 100%;
+  }
+
+  figcaption span {
+    display: block;
   }
 `
 
@@ -40,12 +45,15 @@ const handler = async req => {
   const path = pathname.split('/').pop()
   const { body } = await client.get(path)
   const title = $('title', body).text()
-  const content = $('main article.article', body).find('h1, p.t-body-text, figure.pic')
+  const article = $('article.magazine', body)
 
-  content.find('img.lazyload').replaceWith((_, el) => {
-    const img = $(el)
-    const { src, srcset } = img.data()
-    return img.attr({ src, srcset, loading: 'lazy' })
+  article.find('.amp-article-content').remove()
+
+  const content = article.find('header h1, header p, header + figure, section.b-entry p, section.b-entry h2, section.b-entry blockquote, section.b-entry figure')
+
+  content.find('amp-img').replaceWith((_, el) => {
+    const { src, srcset = '', title } = $(el).attr()
+    return $('<img>').attr({ src, srcset, title, loading: 'lazy' })
   })
 
   return `
