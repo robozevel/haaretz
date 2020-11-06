@@ -33,7 +33,7 @@
       const el = document.querySelector('input[name=url]')
       const text = el.value || await navigator.clipboard.readText()
       const { href, hostname } = new URL(text)
-      if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${req.query.url}`)
+      if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${text}`)
       el.value = href
     }
 
