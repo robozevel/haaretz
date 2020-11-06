@@ -15,7 +15,7 @@ const client = got.extend({
 const css = `
   body {
     max-width: 32rem;
-    margin: 2rem auto;
+    margin: 0 auto;
     font-family: 'Rubik', sans-serif;
     font-size: 16px;
     line-height: 1.6;
