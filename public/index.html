@@ -29,6 +29,8 @@
     </fieldset>
   </form>
   <script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
+
     const pasteURL = async () => {
       const el = document.querySelector('input[name=url]')
       const text = el.value || await navigator.clipboard.readText()
