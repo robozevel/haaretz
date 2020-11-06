@@ -1,19 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/manifest.json" rel="manifest">
+  <title>Haaretz Reader</title>
   <style>
     input {
       display: block;
       width: 100%;
       height: 2rem;
     }
+    
+    input {
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      margin-top: .5rem;
+    }
   </style>
 </head>
 <body>
   <form action="/api/" method="get">
-    <input type="search" name="url" autofocus autocomplete="off">
-    <input type="submit" value="Read article" id="submit">
+    <fieldset>
+      <input type="search" placeholder="Haaretz URL" name="url" autofocus autocomplete="off">
+      <input type="submit" value="Read article" id="submit">
+    </fieldset>
   </form>
+  <script>
+    const pasteURL = async () => {
+      const el = document.querySelector('input[name=url]')
+      const text = el.value || await navigator.clipboard.readText()
+      const { href, hostname } = new URL(text)
+      if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${req.query.url}`)
+      el.value = href
+    }
+
+    const form = document.querySelector('form')
+    const onSubmit = async (e) => {
+      const fieldset = document.querySelector('fieldset')
+      try {
+        e.preventDefault()
+        await pasteURL()
+        form.removeEventListener('submit', onSubmit)
+        e.target.requestSubmit()
+        fieldset.disabled = true
+      } catch (err) {
+        fieldset.disabled = false
+        alert(err.message)
+      }
+    }
+
+    form.addEventListener('submit', onSubmit)
+  </script>
 </body>
 </html>
