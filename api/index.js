@@ -41,9 +41,11 @@ const css = `
 `
 
 const handler = async req => {
-  const { pathname } = new URL(req.query.url || req.query.text)
-  const path = pathname.split('/').pop()
-  const { body } = await client.get(path)
+  const { pathname, hostname } = new URL(req.query.url || req.query.text)
+  if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${req.query.url}`)
+
+  const articleId = pathname.split('/').pop()
+  const { body } = await client.get(articleId)
   const title = $('title', body).text()
   const article = $('article.magazine', body)
 
