@@ -45,6 +45,10 @@ const css = `
   }
 `
 
+const script = `
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
+`
+
 const handler = async req => {
   const { pathname, hostname } = new URL(req.query.url || req.query.text)
   if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${req.query.url}`)
@@ -52,7 +56,7 @@ const handler = async req => {
   const articleId = pathname.split('/').pop()
   const { body } = await client.get(articleId)
   const title = $('title', body).text()
-  const article = $('article.magazine', body)
+  const article = $('article', body).first()
 
   article.find('.amp-article-content').remove()
 
@@ -79,7 +83,7 @@ const handler = async req => {
   <body>
     ${content}
     <script>
-      if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
+      ${script}
     </script>
   </body>
   </html>
