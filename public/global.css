@@ -1,0 +1,58 @@
+body {
+  max-width: 32rem;
+  margin: 0 auto;
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+[role=button] {
+  cursor: pointer;
+  user-select: none;
+}
+
+main {
+  padding: 0 2rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem .375rem .5rem .5rem;
+}
+
+header svg.logo {
+  fill: #fff;
+  display: block;
+  height: 2rem;
+  width: 2rem;
+}
+
+header svg.share {
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: #fff;
+}
+
+figure {
+  margin: 1rem -2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+figure img {
+  width: 100vw;
+  max-width: 100%;
+}
+
+figcaption {
+  padding: 0 .5rem;
+  text-align: center;
+}
+
+figcaption span {
+  display: block;
+}

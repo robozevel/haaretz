@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/manifest.json" rel="manifest">
+  <link href="/global.css" rel="stylesheet">
   <title>Haaretz Reader</title>
   <style>
     input {
@@ -27,7 +28,7 @@
 <body>
   <form action="/api/" method="get" enctype="application/x-www-form-urlencoded">
     <fieldset>
-      <input type="url" placeholder="Haaretz URL" name="url" autofocus autocomplete="off">
+      <input type="url" placeholder="Haaretz or TheMarker URL" name="url" autofocus autocomplete="off">
       <input type="submit" value="Read article" id="submit">
     </fieldset>
   </form>
@@ -35,8 +36,13 @@
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
 
     const validateURL = value => {
-      if (typeof value !== 'string') return false
-      return new URL(value).hostname === 'www.haaretz.co.il'
+      try {
+        const { hostname } = new URL(value)
+        return ['www.haaretz.co.il', 'www.themarker.com'].includes(hostname)
+      } catch (err) {
+        console.error(err)
+        return false
+      }
     }
 
     const form = document.querySelector('form')
@@ -47,8 +53,10 @@
 
       try {
         e.preventDefault()
+
         const text = await navigator.clipboard.readText()
         if (!validateURL(text)) throw new Error(`Invalid URL: ${text}`)
+
         input.value = text
         form.removeEventListener('submit', onSubmit)
         e.target.requestSubmit()
