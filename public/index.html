@@ -11,9 +11,12 @@
       width: 100%;
       height: 2rem;
     }
-    
+
     input {
       text-align: center;
+      padding: 0;
+      appearance: searchfield;
+      box-sizing: border-box;
     }
 
     input[type="submit"] {
@@ -22,29 +25,31 @@
   </style>
 </head>
 <body>
-  <form action="/api/" method="get">
+  <form action="/api/" method="get" enctype="application/x-www-form-urlencoded">
     <fieldset>
-      <input type="search" placeholder="Haaretz URL" name="url" autofocus autocomplete="off">
+      <input type="url" placeholder="Haaretz URL" name="url" autofocus autocomplete="off">
       <input type="submit" value="Read article" id="submit">
     </fieldset>
   </form>
   <script>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
 
-    const pasteURL = async () => {
-      const el = document.querySelector('input[name=url]')
-      const text = el.value || await navigator.clipboard.readText()
-      const { href, hostname } = new URL(text)
-      if (hostname !== 'www.haaretz.co.il') throw new Error(`Invalid URL: ${text}`)
-      el.value = href
+    const validateURL = value => {
+      if (typeof value !== 'string') return false
+      return new URL(value).hostname === 'www.haaretz.co.il'
     }
 
     const form = document.querySelector('form')
     const onSubmit = async (e) => {
       const fieldset = document.querySelector('fieldset')
+      const input = document.querySelector('input[name=url]')
+      if (validateURL(input.value)) return
+
       try {
         e.preventDefault()
-        await pasteURL()
+        const text = await navigator.clipboard.readText()
+        if (!validateURL(text)) throw new Error(`Invalid URL: ${text}`)
+        input.value = text
         form.removeEventListener('submit', onSubmit)
         e.target.requestSubmit()
         fieldset.disabled = true
