@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "got": "^10.2.2",
+    "got": "^11.8.5",
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1"
   }
