@@ -1,12 +1,9 @@
-import $ from 'cheerio'
-import got from 'got'
+import { load } from "cheerio";
+import { ofetch } from "ofetch";
 
-const client = got.extend({
-  headers: {
-    // Chrome - iPhone
-    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/85.0.4183.121 Mobile/15E148 Safari/604.1'
-  }
-})
+const headers = {
+  "User-Agent": "Twitterbot",
+};
 
 const script = `
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
@@ -26,28 +23,22 @@ const script = `
   } else {
     shareButton.style.visibility = 'hidden'
   }
-`
+`;
 
-interface Params {
-  articleId: string
-  prefixUrl: string
-  css: string
-  logo: string
-}
-
-export const fetchArticle = async ({ articleId, prefixUrl, logo, css }: Params) => {
-  const { body } = await client.get(`amp/${articleId}`, { prefixUrl })
-
-  const title = $('title', body).text()
-  const article = $('article', body).first()
-  article.find('.amp-article-content').remove()
-
-  const content = article.find('header h1, header p, header + figure, section.b-entry p, section.b-entry h2, section.b-entry blockquote, section.b-entry figure')
-
-  content.find('amp-img').replaceWith(function () {
-    const { src, srcset = '', title } = $(this).attr()
-    return $('<img>').attr({ src, srcset, title, loading: 'lazy' })
-  })
+export const fetchArticle = async ({
+  articleId,
+  baseURL,
+  logo,
+  css,
+}: {
+  articleId: string;
+  baseURL: string;
+  css: string;
+  logo: string;
+}) => {
+  const $ = await ofetch(articleId, { baseURL, headers }).then(load);
+  const title = $("title").text();
+  const content = $("[data-test='articleBody']");
 
   return `
   <!DOCTYPE html>
@@ -80,5 +71,5 @@ export const fetchArticle = async ({ articleId, prefixUrl, logo, css }: Params) 
     </script>
   </body>
   </html>
-  `
-}
+  `;
+};
